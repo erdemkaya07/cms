@@ -554,6 +554,13 @@
 // initialize app
 +function($, window) { 'use strict';
 	window.app.init();
+// manuel menubar och navbar setTheme -start
+	window.app.menubar.setTheme("dark");
+	window.app.menubar.applyTheme();
+	window.app.navbar.setTheme("warning");
+	window.app.navbar.applyTheme();
+	window.app.saveSettings();
+// manuel menubar och navbar setTheme -slut
 	window.app.menubar.init();
 	window.app.navbar.init();
 	window.app.customizer.init();
