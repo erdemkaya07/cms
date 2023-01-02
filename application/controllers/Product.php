@@ -24,5 +24,60 @@ class Product extends CI_Controller
 
 		$this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
 	}
+
+	public function new_form()
+	{
+		$viewData = new stdClass();
+
+		$viewData->viewFolder = $this->viewFolder;
+		$viewData->subViewFolder = "add";
+
+		$this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+	}
+
+	public function save()
+	{
+		//Get->Codeigniter library "form_validation"
+		$this->load->library("form_validation");
+
+		$this->form_validation->set_rules("title", "ProduktNamn", "required|trim");
+
+		//validation_errors
+		$this->form_validation->set_message(
+			array(
+				"required" => "Du måste skriva <b>{field}</b>"
+			)
+		);
+
+		// true or false
+		$validate = $this->form_validation->run();
+		if($validate){
+			$insert = $this->product_model->add(
+				array(
+					"title" 		=> $this->input->post("title"),
+					"description" 	=> $this->input->post("description"),
+					"url" 			=> "test",
+					"rank"			=> 0,
+					"isAcrive"		=> 1,
+					"createdAt" 	=> date("Y-m-d H:i:s"),
+				)
+			);
+
+			if($insert){
+				echo "string";
+			} else {
+				echo "något fel";
+			}
+
+		} else {
+			$viewData = new stdClass();
+
+			$viewData->viewFolder = $this->viewFolder;
+			$viewData->subViewFolder = "add";
+			$viewData->form_error = true;
+
+			$this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+		}
+	}
 }
 ?>
