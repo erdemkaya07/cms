@@ -37,7 +37,7 @@
 							</td>
 							<td>
 								<a href="#" class="btn btn-sm btn-danger btn-outline"><i class="fa fa-trash"></i> Radera </a>
-								<a href="#" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil"></i> Redigera </a>
+								<a href="<?php echo base_url("product/updateForm/$item->id"); ?>" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil"></i> Redigera </a>
 							</td>
 						<?php } ?>
 					</tr>
