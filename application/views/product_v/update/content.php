@@ -9,11 +9,18 @@
 			<hr class="widget-separator">
 			<div class="widget-body">
 				<form action="<?php echo base_url("product/update/$item->id"); ?>" method="post">
-					<div class="form-group">
+					<div class="form-group col-sm-6">
 						<label>Produkt Namn</label>
 						<input class="form-control" placeholder="ProduktNamn" name="title" value="<?php echo $item->title; ?>">
 						<?php if(isset($form_error)) { ?>
 							<small class="pull-right input-form-error"><?php echo form_error("title") ?></small>
+						<?php } ?>
+					</div>
+					<div class="form-group col-sm-6">
+						<label>Pris - SEK</label>
+						<input class="form-control" placeholder="Pris - SEK" name="pris" value="<?php echo $item->pris; ?> SEK">
+						<?php if(isset($form_error)) { ?>
+							<small class="pull-right input-form-error"><?php echo form_error("pris") ?></</small>
 						<?php } ?>
 					</div>
 					<div class="form-group">

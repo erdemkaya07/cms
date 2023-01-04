@@ -57,9 +57,10 @@ class Product extends CI_Controller
 					"title" 		=> $this->input->post("title"),
 					"description" 	=> $this->input->post("description"),
 					"url" 			=> convertToSEO($this->input->post("title")),
+					"pris"			=> $this->input->post("pris"),
 					"rank"			=> 0,
 					"isActive" 		=> 1,
-					"createdAt" 	=> date("Y-m-d H:i:s")
+					"createdAt" 	=> date("Y-m-d H:i:s"),
 				)
 			);
 
@@ -123,6 +124,7 @@ class Product extends CI_Controller
 					"title" 		=> $this->input->post("title"),
 					"description" 	=> $this->input->post("description"),
 					"url" 			=> convertToSEO($this->input->post("title")),
+					"pris"			=> $this->input->post("pris"),
 				)
 			);
 
@@ -147,6 +149,21 @@ class Product extends CI_Controller
 			$viewData->item = $item;
 
 			$this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
+		}
+	}
+
+	public function delete($id)
+	{
+		$delete = $this->product_model->delete(
+			array(
+				"id"	=> $id
+			)
+		);
+
+		if ($delete) {
+			redirect(base_url("product"));
+		} else {
+			redirect(base_url("product"));
 		}
 	}
 }

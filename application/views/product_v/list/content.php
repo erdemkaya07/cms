@@ -16,6 +16,7 @@
 					<th>#id</th>
 					<th>url</th>
 					<th>Produkt</th>
+					<th>Pris</th>
 					<th>Beskrivning</th>
 					<th>Status</th>
 					<th></th>
@@ -26,6 +27,7 @@
 							<td><?php echo $item->id; ?></td>
 							<td><?php echo $item->url; ?></td>
 							<td><?php echo $item->title; ?></td>
+							<th><?php echo $item->pris; ?> SEK</th>
 							<td><?php echo $item->description; ?></td>
 							<td>
 								 <input
@@ -36,7 +38,11 @@
                                     />
 							</td>
 							<td>
-								<a href="#" class="btn btn-sm btn-danger btn-outline"><i class="fa fa-trash"></i> Radera </a>
+								<button 
+									data-url="<?php echo base_url("product/delete/$item->id"); ?>"
+									class="btn btn-sm btn-danger btn-outline remove-btn">
+									<i class="fa fa-trash"></i> Radera 
+								</button>
 								<a href="<?php echo base_url("product/updateForm/$item->id"); ?>" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil"></i> Redigera </a>
 							</td>
 						<?php } ?>
