@@ -17,13 +17,25 @@ $(document).ready(function(){
 	})
 
 //prop("checked") => True eller False
-$(".isActive").change(function(){
-	var $data = $(this).prop("checked");
-	var $data_url = $(this).data("url");
+	$(".isActive").change(function(){
+		var $data = $(this).prop("checked");
+		var $data_url = $(this).data("url");
 	// $data och och $dataUrl !== "undefined"
-	if(typeof $data !== "undefined" && typeof $data_url !== "undefined"){
+		if(typeof $data !== "undefined" && typeof $data_url !== "undefined"){
 		//postMethod tar 3 params URL, objeckt data, func
-		$.post($data_url, { data : $data}, function(response){});
-	}
-})
+			$.post($data_url, { data : $data}, function(response){});
+		}
+	})
+
+//sortable snitt
+	$(".sortable").sortable();
+
+//function(event, ui)
+	$(".sortable").on("sortupdate", function(event, ui){
+		var $data = $(this).sortable("serialize");
+		var $data_url = $(this).data("url");
+
+		//Why function(response)? -"answer for URL"
+		$.post($data_url, { data : $data}, function(response){})
+	})	
 })

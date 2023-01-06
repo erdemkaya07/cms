@@ -15,7 +15,9 @@ class Product extends CI_Controller
 		$viewData = new stdClass();
 
 		//All data come here
-		$items = $this->product_model->get_all();
+		$items = $this->product_model->get_all(
+			array(), "rank ASC"
+		);
 
 		//ViewData variables set
 		$viewData->viewFolder = $this->viewFolder;
@@ -182,6 +184,45 @@ class Product extends CI_Controller
 				)
 			);
 		}
+	}
+
+	public function rankSet()
+	{
+		$data = $this->input->post("data");
+
+		/* 
+		parse_str(TR) => parse_str(string $dizge, array &$sonuç): void
+		Bir URL üzerinden aktarılan bir sorgu dizgesindeki değişkenleri çözümler ve bunları geçerli etki alanında (veya sonuç belirtilmişse dizi içinde) tanımlı hale getirir.
+
+		parse_str(EN) =>Parses string as if it were the query string passed via a URL and sets variables in the current scope (or in the array if result is provided)
+		*/
+		parse_str($data, $order);
+
+		/* ["ord"] kommer från list/content.php 27 => id="ord" */
+		$items = $order["ord"];
+
+		foreach($items as $rank => $id){
+			$this->product_model->update(
+				array(
+					"id" => $id,
+					//om byttade inte position
+					"rank !=" => $rank
+				),
+				array(
+					"rank" => $rank
+				)
+			);
+		}
+	}
+
+	public function imageForm($id)
+	{
+		$viewData = new stdClass();
+
+		$viewData->viewFolder = $this->viewFolder;
+		$viewData->subViewFolder = "image";
+
+		$this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
 	}
 }
 ?>

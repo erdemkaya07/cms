@@ -13,20 +13,22 @@
 			<?php } else { ?>
 			<table class="table table-hover table-striped">
 				<thead>
-					<th>#id</th>
-					<th>url</th>
+					<th><i class="fa fa-arrows-v"></i></th>
+					<th>ID</th>
 					<th>Produkt</th>
+					<th>url</th>
 					<th>Pris</th>
 					<th>Beskrivning</th>
 					<th>Status</th>
 					<th></th>
 				</thead>
-				<tbody>
+				<tbody class="sortable" data-url="<?php echo base_url("product/rankSet"); ?>">
 					<?php foreach ($items as $item) { ?>
-						<tr>
+						<tr id="ord-<?php echo $item->id;  ?>">
+							<td><i class="fa fa-arrows-v"></td>
 							<td><?php echo $item->id; ?></td>
-							<td><?php echo $item->url; ?></td>
 							<td><?php echo $item->title; ?></td>
+							<td><?php echo $item->url; ?></td>
 							<th><?php echo $item->pris; ?> SEK</th>
 							<td><?php echo $item->description; ?></td>
 							<td>
@@ -46,6 +48,7 @@
 									<i class="fa fa-trash"></i> Radera 
 								</button>
 								<a href="<?php echo base_url("product/updateForm/$item->id"); ?>" class="btn btn-sm btn-info btn-outline"><i class="fa fa-pencil"></i> Redigera </a>
+								<a href="<?php echo base_url("product/imageForm/$item->id"); ?>" class="btn btn-sm btn-dark btn-outline"><i class="fa fa-file-image-o"></i> Bild </a>
 							</td>
 						<?php } ?>
 					</tr>

@@ -10,9 +10,9 @@ class Product_model extends CI_Model
 	}
 
 //This method for all data
-	public function get_all($where = array())
+	public function get_all($where = array(), $order = "id ASC")
 	{
-		return $this->db->where($where)->get($this->tableName)->result();
+		return $this->db->where($where)->order_by($order)->get($this->tableName)->result();
 	}
 
 	public function add($data = array())
@@ -35,7 +35,7 @@ class Product_model extends CI_Model
 	{
 		return $this->db->where($where)->delete($this->tableName, $data);
 	}
-	
+
 }
 
 ?>
