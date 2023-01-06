@@ -35,7 +35,7 @@ class Product_model extends CI_Model
 	{
 		return $this->db->where($where)->delete($this->tableName, $data);
 	}
-
+	
 }
 
 ?>

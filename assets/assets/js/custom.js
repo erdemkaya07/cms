@@ -15,4 +15,15 @@ $(document).ready(function(){
 			}
 		});
 	})
+
+//prop("checked") => True eller False
+$(".isActive").change(function(){
+	var $data = $(this).prop("checked");
+	var $data_url = $(this).data("url");
+	// $data och och $dataUrl !== "undefined"
+	if(typeof $data !== "undefined" && typeof $data_url !== "undefined"){
+		//postMethod tar 3 params URL, objeckt data, func
+		$.post($data_url, { data : $data}, function(response){});
+	}
+})
 })
