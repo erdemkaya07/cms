@@ -242,35 +242,113 @@ class Product extends CI_Controller
 	{
 		/*Bilder namn SEO convert*/
         //$file_name = convertToSEO($_FILES['file']['name']);
-        /*TA BORT .JPG .PNG .JPEG FOR URL*/
+		/*TA BORT .JPG .PNG .JPEG FOR URL*/
 		$file_name = convertToSEO(pathinfo($_FILES["file"]["name"], PATHINFO_FILENAME)) . "." . pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
 
 		$config["allowed_types"] = "jpg|jpeg|png";
-        $config["upload_path"]   = "uploads/$this->viewFolder/";
-        $config["file_name"] = $file_name;
+		$config["upload_path"]   = "uploads/$this->viewFolder/";
+		$config["file_name"] = $file_name;
 
-        $this->load->library("upload", $config);
+		$this->load->library("upload", $config);
 
-        $upload = $this->upload->do_upload("file");
+		$upload = $this->upload->do_upload("file");
 
-        if($upload){
+		if($upload){
 
-            $uploaded_file = $this->upload->data("file_name");
+			$uploaded_file = $this->upload->data("file_name");
 
-            $this->product_image_model->add(
-                array(
-                    "img_url"       => $uploaded_file,
-                    "rank"          => 0,
-                    "isActive"      => 1,
-                    "isCover"       => 0,
-                    "createdAt"     => date("Y-m-d H:i:s"),
-                    "product_id"    => $id
-                )
-            );
+			$this->product_image_model->add(
+				array(
+					"img_url"       => $uploaded_file,
+					"rank"          => 0,
+					"isActive"      => 1,
+					"isCover"       => 0,
+					"createdAt"     => date("Y-m-d H:i:s"),
+					"product_id"    => $id
+				)
+			);
 		} else {
 			echo "Fannnn!";
 		}
 
+	}
+
+	public function refreshImageList($id)
+	{
+		$viewData = new stdClass();
+
+		$viewData->viewFolder = $this->viewFolder;
+		$viewData->subViewFolder = "image";
+
+		$viewData->item_images = $this->product_image_model->get_all(
+			array(
+				"product_id" => $id
+			)
+		);
+
+		$render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/renderElements/image_list_v", $viewData, true);
+
+		echo $render_html;
+	}
+
+	public function isCoverSet($id, $parent_id)
+	{
+		if($id && $parent_id){
+			//=== "true" colum isCover TINYINT
+			$isCover = ($this->input->post("data") === "true") ? 1 : 0;
+			//huvud bild ID
+			$this->product_image_model->update(
+				array(
+					"id" => $id,
+					"product_id" => $parent_id
+				),
+				array(
+					"isCover" => $isCover
+				)
+			);
+			//Annan bilder
+			$this->product_image_model->update(
+				array(
+					"id !=" => $id,
+					"product_id" => $parent_id
+				),
+				array(
+					"isCover" => 0
+				)
+			);
+
+			$viewData = new stdClass();
+
+			$viewData->viewFolder = $this->viewFolder;
+			$viewData->subViewFolder = "image";
+
+			$viewData->item_images = $this->product_image_model->get_all(
+				array(
+					"product_id" => $parent_id
+				)
+			);
+
+			$render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/renderElements/image_list_v", $viewData, true);
+
+			echo $render_html;
+		}
+	}
+
+	public function imageIsActiveSet($id)
+	{
+		if($id){
+			//=== "true" colum isActive TINYINT
+			$isActive = ($this->input->post("data") === "true") ? 1 : 0;
+
+			$this->product_image_model->update(
+				array(
+					"id" => $id
+				),
+				array(
+					"isActive" => $isActive
+				)
+			);
+		}
 	}
 }
 ?>

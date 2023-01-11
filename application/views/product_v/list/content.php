@@ -11,7 +11,7 @@
 					<p>OPS! Jag hittar inte data! Vill du skapa en ny produkt? <a href="<?php echo base_url("product/new_form");  ?>">Klick</a></p>
 				</div>
 			<?php } else { ?>
-			<table class="table table-hover table-striped">
+			<table class="table table-hover table-striped content-container">
 				<thead>
 					<th><i class="fa fa-arrows-v"></i></th>
 					<th>ID</th>
