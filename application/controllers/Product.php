@@ -68,10 +68,21 @@ class Product extends CI_Controller
 			);
 
 			if($insert){
-				redirect(base_url("product"));
+				$alert = array(
+					"title" => "Hej",
+					"text" => "Bra jobbat!",
+					"type" => "success"
+				);
 			} else {
-				redirect(base_url("product"));
+				$alert = array(
+					"title" => "Hej",
+					"text" => "Något fel!",
+					"type" => "error"
+				);
 			}
+			//Visa/skriva resultat i session.... set_flashdata ->codeigneter
+			$this->session->set_flashdata("alert", $alert);
+			redirect(base_url("product"));
 
 		} else {
 			$viewData = new stdClass();
@@ -132,10 +143,22 @@ class Product extends CI_Controller
 			);
 
 			if($update){
-				redirect(base_url("product"));
+				$alert = array(
+					"title" => "Hej",
+					"text" => "Bra jobbat!",
+					"type" => "success"
+				);
+				
 			} else {
-				redirect(base_url("product"));
+				$alert = array(
+					"title" => "Hej",
+					"text" => "Hopps! Något fel!",
+					"type" => "error"
+				);
 			}
+			$this->session->set_flashdata("alert", $alert);
+			redirect(base_url("product"));
+
 
 		} else {
 			$viewData = new stdClass();
@@ -164,9 +187,45 @@ class Product extends CI_Controller
 		);
 
 		if ($delete) {
-			redirect(base_url("product"));
+			$alert = array(
+				"title" => "Hej",
+				"text" => "Bra jobbat! Raderat!",
+				"type" => "success"
+			);
+			
 		} else {
-			redirect(base_url("product"));
+			$alert = array(
+				"title" => "Hej",
+				"text" => "Hopps! Jag kan inte radera.Något fel!",
+				"type" => "error"
+			);
+		}
+
+		$this->session->set_flashdata("alert", $alert);
+		redirect(base_url("product"));
+
+	}
+
+	public function imageDelete($id, $parent_id)
+	{
+		$fileName = $this->product_image_model->get(
+			array(
+				"id" => $id
+			)
+		);
+
+		$delete = $this->product_image_model->delete(
+			array(
+				"id"	=> $id
+			)
+		);
+
+		if ($delete) {
+			unlink("uploads/{$this->viewFolder}/$file_name->img_url");
+
+			redirect(base_url("product/imageForm/$parent_id"));
+		} else {
+			redirect(base_url("product/imageForm/$parent_id"));
 		}
 	}
 
@@ -216,6 +275,28 @@ class Product extends CI_Controller
 		}
 	}
 
+	public function imageRankSet()
+	{
+		$data = $this->input->post("data");
+		parse_str($data, $order);
+
+		/* ["ord"] kommer från list/content.php 27 => id="ord" */
+		$items = $order["ord"];
+
+		foreach($items as $rank => $id){
+			$this->product_image_model->update(
+				array(
+					"id" => $id,
+					//om byttade inte position
+					"rank !=" => $rank
+				),
+				array(
+					"rank" => $rank
+				)
+			);
+		}
+	}
+
 	public function imageForm($id)
 	{
 		$viewData = new stdClass();
@@ -232,7 +313,7 @@ class Product extends CI_Controller
 		$viewData->item_images = $this->product_image_model->get_all(
 			array(
 				"product_id" => $id
-			)
+			),	"rank ASC"
 		);
 
 		$this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
@@ -325,7 +406,7 @@ class Product extends CI_Controller
 			$viewData->item_images = $this->product_image_model->get_all(
 				array(
 					"product_id" => $parent_id
-				)
+				),	"rank ASC"
 			);
 
 			$render_html = $this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/renderElements/image_list_v", $viewData, true);

@@ -1,5 +1,6 @@
 $(document).ready(function(){
-	$(".remove-btn").click(function(e){
+
+	$(".content-container, .image_list_container").on('click', '.remove-btn', function(e){
 		var $dataUrl = $(this).data("url");
 		Swal.fire({
 			title: 'Är du saker',
@@ -10,7 +11,7 @@ $(document).ready(function(){
 			cancelButtonColor: '#d33',
 			confirmButtonText: 'Ja, radera den!'
 		}).then((result) => {
-			if (result) {
+			if (result.value) {
 				window.location.href = $dataUrl;
 			}
 		});
@@ -49,7 +50,7 @@ $(document).ready(function(){
 						jackColor: jackColor
 					});
 				});
-
+				$(".sortable").sortable();
 			});
 		}
 	})
@@ -58,7 +59,7 @@ $(document).ready(function(){
 	$(".sortable").sortable();
 
 //function(event, ui)
-	$(".sortable").on("sortupdate", function(event, ui){
+	$(".content-container, .image_list_container").on("sortupdate", '.sortable', function(event, ui){
 		var $data = $(this).sortable("serialize");
 		var $data_url = $(this).data("url");
 
@@ -87,6 +88,7 @@ $(document).ready(function(){
 					jackColor: jackColor
 				});
 			});
+			$(".sortable").sortable();
 		});
 	})
 })
