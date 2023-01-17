@@ -23,17 +23,17 @@
 					<div class="form-group">
 						<label for="control-demo-6" class="" >Select Media</label>
 						<div id="control-demo-6" class="">
-							<select class="form-control" name="sidor_types">
+							<select class="form-control sidor_type_select" name="sidor_types">
 								<option value="image">Image</option>
 								<option value="video">Video</option>
 							</select>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group image_upload_container">
 						<label>File input</label>
 						<input type="file" name="image_url"class="form-control">
 					</div>
-					<div class="form-group">
+					<div class="form-group video_url_container">
 						<label>Video URL</label>
 						<input class="form-control" placeholder="Video URL" name="video_url">
 						<?php if(isset($form_error)) { ?>
