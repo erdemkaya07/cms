@@ -96,7 +96,14 @@
         <li>
           <a href="javascript:void(0)">
             <i class="menu-icon fa fa-shopping-cart"></i>
-            <span class="menu-text">News-Bestälningar</span>
+            <span class="menu-text">Bestälningar</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="<?php echo base_url("sidor"); ?>">
+            <i class="menu-icon fa fa-newspaper-o"></i>
+            <span class="menu-text">Sidor</span>
           </a>
         </li>
 
