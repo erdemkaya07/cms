@@ -43,6 +43,26 @@ class Sidor extends CI_Controller
 		//Get->Codeigniter library "form_validation"
 		$this->load->library("form_validation");
 
+		$news_type = $this->input->post("news_type");
+
+		if($news_type == "image"){
+			if($_FILES["img_url"]["name"] == ""){
+				$alert = array(
+					"title" => "Hej",
+					"text" => "Något fel!",
+					"type" => "error"
+				);
+				//Visa/skriva resultat i session.... set_flashdata ->codeigneter
+				$this->session->set_flashdata("alert", $alert);
+				redirect(base_url("sidor/new_form"));
+			}
+
+		}else if($news_type == "video") {
+			
+			$this->form_validation->set_rules("video_url", "Video URL", "required|trim");
+		}
+
+
 		$this->form_validation->set_rules("title", "ProduktNamn", "required|trim");
 
 		//validation_errors
@@ -60,7 +80,6 @@ class Sidor extends CI_Controller
 					"title" 		=> $this->input->post("title"),
 					"description" 	=> $this->input->post("description"),
 					"url" 			=> convertToSEO($this->input->post("title")),
-					"pris"			=> $this->input->post("pris"),
 					"rank"			=> 0,
 					"isActive" 		=> 1,
 					"createdAt" 	=> date("Y-m-d H:i:s"),
@@ -82,7 +101,7 @@ class Sidor extends CI_Controller
 			}
 			//Visa/skriva resultat i session.... set_flashdata ->codeigneter
 			$this->session->set_flashdata("alert", $alert);
-			redirect(base_url("product"));
+			redirect(base_url("sidor"));
 
 		} else {
 			$viewData = new stdClass();
@@ -90,6 +109,7 @@ class Sidor extends CI_Controller
 			$viewData->viewFolder = $this->viewFolder;
 			$viewData->subViewFolder = "add";
 			$viewData->form_error = true;
+			$viewData->news_type = $news_type;
 
 			$this->load->view("{$viewData->viewFolder}/{$viewData->subViewFolder}/index", $viewData);
 		}
